@@ -1,11 +1,17 @@
 
-// app/page.tsx
+
+import { notFound } from 'next/navigation'
 import { client } from '@/lib/sanity/client'
-import { HOMEPAGE_QUERY } from '@/lib/sanity/queries/homepage'
-import { PortableText } from '@portabletext/react'
-import PageBackground from '@/components/layout/PageBackground'
 import { H1, H2, H3, H4, H5 } from '@/components/ui/Heading'
+import PageBackground from '@/components/layout/PageBackground'
 import { Button } from '@/components/ui/Button'
+import { pageBySlugQuery, allPagesQuery } from '@/lib/sanity/queries/page'
+import { PortableText } from '@portabletext/react'
+
+export async function generateStaticParams() {
+    const slugs: { slug: string }[] = await client.fetch(allPagesQuery)
+    return slugs.map(({ slug }) => ({ slug }))
+}
 
 const headingMap = {
     h1: H1,
@@ -15,22 +21,19 @@ const headingMap = {
     h5: H5,
 }
 
-export default async function HomePage() {
-    const data = await client.fetch(HOMEPAGE_QUERY)
+export default async function Page({ params }: { params: { slug: string } }) {
+    const page = await client.fetch(pageBySlugQuery, { slug: params.slug })
 
-    if (!data || !Array.isArray(data.content)) {
-        return <p>Geen content beschikbaar.</p>
-    }
+    if (!page) return notFound()
 
     return (
-        <div>
-            {data.content.map((block: any, index: number) => {
+        <main>
+            {page.content?.map((block: any, index: number) => {
                 if (!block || typeof block !== 'object') return null
 
                 switch (block._type) {
                     case 'heroSection': {
-                        const Heading =
-                            headingMap[block.headingLevel as keyof typeof headingMap] ?? H1
+                        const Heading = headingMap[block.headingLevel as keyof typeof headingMap] ?? H1
 
                         return (
                             <section key={index}>
@@ -66,8 +69,11 @@ export default async function HomePage() {
                             </section>
                         )
                     }
+
+                    default:
+                        return null
                 }
             })}
-        </div>
+        </main>
     )
 }

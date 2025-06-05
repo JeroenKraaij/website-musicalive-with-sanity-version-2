@@ -1,17 +1,36 @@
+/* globals.css */
+
+/* ─────────────────────────────────────────────────────────────
+   1. Tailwind 4 “single‐import” style (imports base/components/utilities)
+───────────────────────────────────────────────────────────── */
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────
+   2. CSS Variables for light mode (and Poppins)
+───────────────────────────────────────────────────────────── */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --font-poppins: 'Poppins', sans-serif;
+  --font-sans: var(--font-poppins);
+
+  /* Core Brand Colors Only (Zinc will come from Tailwind) */
+  --color-white: #ffffff;
+  --color-primary: #ffcd74;
+  --color-secondary: #9c6ace;
+  --color-accent: #f8d18c;
+  --color-teal: #2d6c6a;
+  --color-blue: #295aa3;
+  --color-highlight: #f5c13d;
+  --color-orange: #FFA700;
+  --color-blue-dark: #1A2B43;
+  --color-night: #070B11;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ─────────────────────────────────────────────────────────────
+   3. Dark‐mode overrides
+───────────────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -19,8 +38,45 @@
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   4. Global `<body>` styles
+───────────────────────────────────────────────────────────── */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. Custom utilities
+───────────────────────────────────────────────────────────── */
+@layer utilities {
+  .lead {
+    @apply text-2xl leading-8 lg:text-3xl lg:leading-9 text-zinc-100/90 font-light;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6. Keyframes & helper classes for scrolling animations
+───────────────────────────────────────────────────────────── */
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 80s linear infinite;
+}
+
+.hover\:paused:hover {
+  animation-play-state: paused;
 }
