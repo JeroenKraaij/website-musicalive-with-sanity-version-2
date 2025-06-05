@@ -1,5 +1,3 @@
-
-// deskStructure.ts
 import { StructureResolver } from 'sanity/desk'
 
 export const myStructure: StructureResolver = (S) =>
@@ -22,15 +20,7 @@ export const myStructure: StructureResolver = (S) =>
                                         .schemaType('siteSettings')
                                         .documentId('siteSettings')
                                 ),
-                            S.listItem()
-                                .title('Global SEO')
-                                .schemaType('globalSeo')
-                                .child(
-                                    S.editor()
-                                        .id('globalSeo')
-                                        .schemaType('globalSeo')
-                                        .documentId('globalSeo')
-                                ),
+
                             S.listItem()
                                 .title('Footer Settings')
                                 .schemaType('footerSettings')
@@ -67,6 +57,16 @@ export const myStructure: StructureResolver = (S) =>
                                 .title('Pages')
                                 .schemaType('page')
                                 .child(S.documentTypeList('page').title('Pages')),
+
+                            S.listItem()
+                                .title('404 Pagina')
+                                .schemaType('notFoundPage')
+                                .child(
+                                    S.editor()
+                                        .id('notFoundPage')
+                                        .schemaType('notFoundPage')
+                                        .documentId('notFoundPage')
+                                ),
 
                             S.listItem()
                                 .title('Categories')

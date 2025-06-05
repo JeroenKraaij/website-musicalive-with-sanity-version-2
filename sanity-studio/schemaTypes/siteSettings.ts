@@ -1,4 +1,4 @@
-// siteSettings.ts
+
 import { defineType, defineField } from "sanity";
 
 export default defineType({
@@ -28,9 +28,7 @@ export default defineType({
             of: [
                 {
                     type: "object",
-                    options: {
-                        modal: "inline",
-                    },
+                    options: { modal: "inline" },
                     fields: [
                         defineField({
                             name: "title",
@@ -40,10 +38,15 @@ export default defineType({
                         }),
                         defineField({
                             name: "page",
-                            title: "Page",
+                            title: "Page (optioneel)",
                             type: "reference",
                             to: [{ type: "page" }],
-                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "url",
+                            title: "Custom URL (fallback)",
+                            type: "string",
+                            description: 'Gebruik dit als er geen "page" is geselecteerd, zoals "/" of een externe link.',
                         }),
                         defineField({
                             name: "hidden",
@@ -58,9 +61,7 @@ export default defineType({
                             of: [
                                 {
                                     type: "object",
-                                    options: {
-                                        modal: "inline", // ✅ Correct option
-                                    },
+                                    options: { modal: "inline" },
                                     fields: [
                                         defineField({
                                             name: "title",
@@ -70,9 +71,14 @@ export default defineType({
                                         }),
                                         defineField({
                                             name: "page",
-                                            title: "Page",
+                                            title: "Page (optioneel)",
                                             type: "reference",
                                             to: [{ type: "page" }],
+                                        }),
+                                        defineField({
+                                            name: "url",
+                                            title: "Custom URL (fallback)",
+                                            type: "string",
                                         }),
                                         defineField({
                                             name: "hidden",
@@ -100,13 +106,48 @@ export default defineType({
                 },
             ],
         }),
+
+        defineField({
+            name: "socials",
+            title: "Social Media Links",
+            type: "array",
+            of: [
+                {
+                    type: "object",
+                    fields: [
+                        defineField({
+                            name: "icon",
+                            title: "Icon",
+                            type: "string",
+                            options: {
+                                list: [
+                                    { title: "Facebook", value: "facebook" },
+                                    { title: "Instagram", value: "instagram" },
+                                    { title: "Youtube", value: "youtube" },
+                                    { title: "LinkedIn", value: "linkedin" },
+                                    { title: "TikTok", value: "tiktok" },
+                                ],
+                                layout: "dropdown",
+                            },
+                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: "url",
+                            title: "URL",
+                            type: "url",
+                            validation: (Rule) => Rule.required(),
+                        }),
+                    ],
+                },
+            ],
+        }),
     ],
 
     preview: {
         prepare() {
             return {
                 title: "Site Settings",
-                subtitle: "Logo en navigatie",
+                subtitle: "Logo, navigatie en socials",
             };
         },
     },

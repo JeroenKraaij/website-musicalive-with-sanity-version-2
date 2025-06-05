@@ -38,7 +38,12 @@ export default defineType({
             name: 'content',
             title: 'Page Content',
             type: 'array',
-            of: [{ type: 'block' }],
+            of: [
+                { type: 'heroSection' },
+                { type: 'videoSection' },
+                // andere blocks hier toevoegen
+            ],
         }),
+
     ],
 })
