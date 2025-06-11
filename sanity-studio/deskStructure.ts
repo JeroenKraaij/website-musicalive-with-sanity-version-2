@@ -1,15 +1,17 @@
-import { StructureResolver } from 'sanity/desk'
+
+// lib/sanity/structure.ts
+import { StructureResolver } from 'sanity/desk';
 
 export const myStructure: StructureResolver = (S) =>
     S.list()
         .title('Studio')
         .items([
-            // 🛠 SETTINGS GROUP
+            // ⚙️ SETTINGS
             S.listItem()
-                .title('Settings')
+                .title('⚙️ Settings')
                 .child(
                     S.list()
-                        .title('Settings')
+                        .title('Instellingen')
                         .items([
                             S.listItem()
                                 .title('Site Settings')
@@ -20,7 +22,6 @@ export const myStructure: StructureResolver = (S) =>
                                         .schemaType('siteSettings')
                                         .documentId('siteSettings')
                                 ),
-
                             S.listItem()
                                 .title('Footer Settings')
                                 .schemaType('footerSettings')
@@ -35,14 +36,13 @@ export const myStructure: StructureResolver = (S) =>
 
             S.divider(),
 
-            // 📄 CONTENT GROUP
+            // 📄 PAGINA'S
             S.listItem()
-                .title('Content')
+                .title('📄 Pagina’s')
                 .child(
                     S.list()
-                        .title('Content')
+                        .title('Pagina’s')
                         .items([
-                            // ✅ HOMEPAGE singleton bovenaan
                             S.listItem()
                                 .title('Homepage')
                                 .schemaType('homepage')
@@ -52,12 +52,10 @@ export const myStructure: StructureResolver = (S) =>
                                         .schemaType('homepage')
                                         .documentId('homepage')
                                 ),
-
                             S.listItem()
                                 .title('Pages')
                                 .schemaType('page')
                                 .child(S.documentTypeList('page').title('Pages')),
-
                             S.listItem()
                                 .title('404 Pagina')
                                 .schemaType('notFoundPage')
@@ -67,21 +65,54 @@ export const myStructure: StructureResolver = (S) =>
                                         .schemaType('notFoundPage')
                                         .documentId('notFoundPage')
                                 ),
+                        ])
+                ),
 
-                            S.listItem()
-                                .title('Categories')
-                                .schemaType('category')
-                                .child(S.documentTypeList('category').title('Categories')),
+            S.divider(),
 
+            // 📰 BLOGS
+            S.listItem()
+                .title('📰 Blog')
+                .child(
+                    S.list()
+                        .title('Blog')
+                        .items([
                             S.listItem()
                                 .title('Blog Posts')
                                 .schemaType('post')
                                 .child(S.documentTypeList('post').title('Blog Posts')),
-
+                            S.listItem()
+                                .title('Categories')
+                                .schemaType('category')
+                                .child(S.documentTypeList('category').title('Categories')),
                             S.listItem()
                                 .title('Authors')
                                 .schemaType('author')
                                 .child(S.documentTypeList('author').title('Authors')),
                         ])
                 ),
-        ])
+
+            S.divider(),
+
+            // 🎤 SHOWCASES
+            S.listItem()
+                .title('🎤 Showcases')
+                .child(
+                    S.list()
+                        .title('Showcases')
+                        .items([
+                            S.listItem()
+                                .title('Showcase Items')
+                                .schemaType('showcase')
+                                .child(S.documentTypeList('showcase').title('Showcases')),
+                            S.listItem()
+                                .title('Categories')
+                                .schemaType('category')
+                                .child(S.documentTypeList('category').title('Categorieën')),
+                            S.listItem()
+                                .title('Authors')
+                                .schemaType('author')
+                                .child(S.documentTypeList('author').title('Auteurs')),
+                        ])
+                ),
+        ]);

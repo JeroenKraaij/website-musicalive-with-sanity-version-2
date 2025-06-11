@@ -1,8 +1,7 @@
+// lib/sanity/queries/showcase.ts
 
-// sanity/queries/post.ts
-
-export const allPostsQuery = `
-  *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {
+export const allShowcasesQuery = `
+  *[_type == "showcase" && defined(publishedAt)] | order(publishedAt desc) {
     title,
     "slug": slug.current,
     publishedAt,
@@ -14,8 +13,8 @@ export const allPostsQuery = `
   }
 `;
 
-export const postBySlugQuery = `
-  *[_type == "post" && slug.current == $slug][0]{
+export const showcaseBySlugQuery = `
+  *[_type == "showcase" && slug.current == $slug][0] {
     title,
     "slug": slug.current,
     publishedAt,
@@ -23,10 +22,7 @@ export const postBySlugQuery = `
       name,
       "profileImageUrl": profileImage.asset->url
     },
-    "categories": categories[]->{
-      title,
-      "slug": slug.current
-    },
+    "categories": categories[]->title,
     mainImage {
       asset->{ url }
     },

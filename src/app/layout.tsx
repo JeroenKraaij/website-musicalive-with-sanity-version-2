@@ -1,8 +1,11 @@
+
 // app/layout.tsx
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import Header from "@/components/layout/Header";
-import { getSiteSettings } from "@/lib/sanity/queries/siteSettings"; // ✅ fetch functie importeren
+import Footer from "@/components/layout/Footer";
+import { getSiteSettings } from "@/lib/sanity/queries/siteSettings";
+import { getFooterSettings } from "@/lib/sanity/queries/footer";
 
 const poppins = Poppins({
     variable: "--font-sans",
@@ -11,13 +14,15 @@ const poppins = Poppins({
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const settings = await getSiteSettings(); // 👈 siteSettings ophalen
+    const settings = await getSiteSettings();
+    const footer = await getFooterSettings();
 
     return (
         <html lang="nl" className={`${poppins.variable} scroll-smooth`} suppressHydrationWarning>
         <body className="antialiased flex flex-col min-h-screen relative">
-        <Header settings={settings} /> {/* ✅ Hier settings meegeven */}
-        <main className="pt-24">{children}</main>
+        <Header settings={settings} />
+        <main className="pt-24 flex-grow">{children}</main>
+        <Footer data={footer} />
         </body>
         </html>
     );

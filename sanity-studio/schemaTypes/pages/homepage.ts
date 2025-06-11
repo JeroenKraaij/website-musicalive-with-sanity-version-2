@@ -1,6 +1,5 @@
 
-// sanity/schemas/pages/homepage.ts
-import { defineType, defineField } from 'sanity'
+import { defineType, defineField } from 'sanity';
 
 export default defineType({
     name: 'homepage',
@@ -15,12 +14,12 @@ export default defineType({
             validation: (Rule) => Rule.required(),
         }),
 
-        // ✅ SEO-velden
+        // ✅ SEO
         defineField({
             name: 'seoTitle',
             title: 'SEO Title',
             type: 'string',
-            description: 'SEO-titel voor de homepage (verschijnt in browser-tab en zoekresultaten).',
+            description: 'SEO-titel voor de homepage (browser-tab en zoekresultaten).',
         }),
         defineField({
             name: 'seoDescription',
@@ -29,7 +28,6 @@ export default defineType({
             rows: 3,
             description: 'Korte beschrijving voor zoekmachines en social media.',
         }),
-
         defineField({
             name: 'openGraphImage',
             title: 'Open Graph Image',
@@ -38,7 +36,7 @@ export default defineType({
             description: 'Social share afbeelding (1200x630 aanbevolen).',
         }),
 
-        // ✅ Content-blokken
+        // ✅ Content
         defineField({
             name: 'content',
             title: 'Page Sections',
@@ -46,16 +44,17 @@ export default defineType({
             of: [
                 { type: 'heroSection' },
                 { type: 'videoSection' },
-                // Voeg hier andere homepage-secties aan toe
+                { type: 'clientGallery' },
+                { type: 'ctaTabSection' },
+                { type: 'conceptSection' },
+                { type: 'featuredSection' }, // ⬅️ Nieuw block
             ],
         }),
     ],
 
     preview: {
         prepare() {
-            return {
-                title: 'Homepage',
-            }
+            return { title: 'Homepage' };
         },
     },
-})
+});

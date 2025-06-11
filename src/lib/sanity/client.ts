@@ -7,7 +7,8 @@ export const client = createClient({
     projectId: 'aw2vk504',
     dataset: 'production',
     apiVersion: '2025-06-03',
-    useCdn: true,
+    useCdn: false,
+    perspective: "previewDrafts",
 });
 
 // Helper to build image URLs

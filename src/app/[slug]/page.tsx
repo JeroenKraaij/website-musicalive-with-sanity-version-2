@@ -1,4 +1,3 @@
-
 import { notFound } from "next/navigation";
 import { client } from "@/lib/sanity/client";
 import { H1, H2, H3, H4, H5 } from "@/components/ui/Heading";
@@ -7,7 +6,6 @@ import { Button } from "@/components/ui/Button";
 import { pageBySlugQuery, allPagesQuery } from "@/lib/sanity/queries/page";
 import { PortableText } from "@portabletext/react";
 import { getPageMetadata } from "@/lib/seo/getPageMetadata";
-
 
 export async function generateStaticParams() {
     const slugs: { slug: string }[] = await client.fetch(allPagesQuery);
@@ -76,9 +74,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
                             </section>
                         );
                     }
-
-                    default:
-                        return null;
                 }
             })}
         </main>

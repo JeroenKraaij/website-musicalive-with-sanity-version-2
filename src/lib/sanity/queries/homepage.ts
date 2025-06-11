@@ -1,10 +1,14 @@
 
-import { videoSectionFragment } from './video'
+import { videoSectionFragment } from './video';
+import { clientGalleryFragment } from './clientGallery';
+import { ctaTabSectionFragment } from './ctaTabs';
+import { conceptSectionFragment } from './conceptSection';
 
 export const HOMEPAGE_QUERY = `
   *[_type == "homepage"][0] {
-    content[]{
+    content[] {
       _type,
+
       _type == "heroSection" => {
         _type,
         title,
@@ -20,7 +24,18 @@ export const HOMEPAGE_QUERY = `
           asset->{ url }
         }
       },
-      ${videoSectionFragment}
+
+      _type == "featuredSection" => {
+        _type,
+        title,
+        type,
+        limit
+      },
+
+      ${videoSectionFragment},
+      ${clientGalleryFragment},
+      ${ctaTabSectionFragment},
+      ${conceptSectionFragment}
     }
   }
-`
+`;

@@ -1,5 +1,4 @@
 
-// sanity/schemas/showcase.ts
 import { defineType, defineField } from "sanity";
 
 export default defineType({
@@ -9,89 +8,130 @@ export default defineType({
     fields: [
         defineField({
             name: "title",
-            title: "Showcase Title",
+            title: "Title",
             type: "string",
-            description: "Name of the showcase item (e.g. “Concert Highlights 2024”).",
             validation: (Rule) => Rule.required(),
         }),
+
         defineField({
             name: "slug",
-            title: "URL Slug",
+            title: "Slug",
             type: "slug",
-            description: "Unique URL for this showcase (e.g. “concert-highlights-2024”).",
             options: {
                 source: "title",
                 maxLength: 96,
+                slugify: (input) =>
+                    input
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/[^\w\-]+/g, "")
+                        .slice(0, 96),
             },
-            validation: (Rule) => Rule.required(),
+            validation: (Rule) =>
+                Rule.required().error("Slug is verplicht en moet URL-vriendelijk zijn."),
         }),
+
         defineField({
             name: "excerpt",
             title: "Excerpt",
             type: "text",
-            description: "Short summary or teaser for this showcase.",
             rows: 3,
             validation: (Rule) => Rule.max(200),
         }),
+
         defineField({
             name: "body",
-            title: "Body Content",
+            title: "Body",
             type: "array",
-            of: [
-                { type: "block" },
-                // add custom block types if needed (e.g. code, gallery blocks)
-            ],
+            of: [{ type: "block" }],
         }),
+
         defineField({
             name: "mainImage",
             title: "Main Image",
             type: "image",
             options: { hotspot: true },
-            description: "Hero image that represents this showcase entry.",
         }),
+
         defineField({
             name: "gallery",
-            title: "Image Gallery",
+            title: "Gallery",
             type: "array",
             of: [
                 {
                     type: "image",
                     options: { hotspot: true },
+                    fields: [
+                        defineField({
+                            name: "alt",
+                            title: "Alt Text",
+                            type: "string",
+                            description: "Voor SEO en toegankelijkheid",
+                        }),
+                        defineField({
+                            name: "caption",
+                            title: "Caption",
+                            type: "string",
+                            description: "Korte toelichting onder de afbeelding",
+                        }),
+                    ],
                 },
             ],
-            description: "Additional images for the showcase gallery.",
+            options: {
+                layout: "grid",
+            },
         }),
+
         defineField({
             name: "featuredEvent",
             title: "Featured Event",
             type: "reference",
             to: [{ type: "event" }],
-            description:
-                "Reference a single event to highlight on this showcase page.",
         }),
+
         defineField({
             name: "relatedEvents",
             title: "Related Events",
             type: "array",
             of: [{ type: "reference", to: [{ type: "event" }] }],
-            description: "Reference multiple events to display here.",
         }),
+
+        defineField({
+            name: "author",
+            title: "Author",
+            type: "reference",
+            to: [{ type: "author" }],
+        }),
+
+        defineField({
+            name: "categories",
+            title: "Categories",
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "category" }] }],
+        }),
+
+        defineField({
+            name: "tags",
+            title: "Tags",
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "tag" }] }],
+        }),
+
         defineField({
             name: "publishedAt",
             title: "Published At",
             type: "datetime",
-            description: "Date/time this showcase should go live.",
             validation: (Rule) => Rule.required(),
         }),
     ],
+
     preview: {
         select: {
             title: "title",
             media: "mainImage",
             date: "publishedAt",
         },
-        prepare(selection) {
-            const { title, date } = selection;
+        prepare({ title, date }) {
             return {
                 title,
                 subtitle: date

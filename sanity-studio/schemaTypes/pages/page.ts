@@ -40,7 +40,8 @@ export default defineType({
             type: 'array',
             of: [
                 { type: 'heroSection' },
-                { type: 'videoSection' },
+                { type: 'clientGallery' },
+                { type: 'ctaTabSection' },
                 // andere blocks hier toevoegen
             ],
         }),

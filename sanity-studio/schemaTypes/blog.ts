@@ -1,6 +1,4 @@
 
-
-// sanity/schemas/post.ts
 import { defineType, defineField } from "sanity";
 
 export default defineType({
@@ -10,19 +8,26 @@ export default defineType({
     fields: [
         defineField({
             name: "title",
-            title: "Post Title",
+            title: "Title",
             type: "string",
             validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: "slug",
-            title: "URL Slug",
+            title: "Slug",
             type: "slug",
             options: {
                 source: "title",
                 maxLength: 96,
+                slugify: (input) =>
+                    input
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/[^\w\-]+/g, "")
+                        .slice(0, 96),
             },
-            validation: (Rule) => Rule.required(),
+            validation: (Rule) =>
+                Rule.required().error("Slug is verplicht en moet URL-vriendelijk zijn."),
         }),
         defineField({
             name: "author",
@@ -35,7 +40,6 @@ export default defineType({
             name: "publishedAt",
             title: "Published At",
             type: "datetime",
-            description: "Date and time when this post goes live.",
             validation: (Rule) => Rule.required(),
         }),
         defineField({
@@ -43,13 +47,11 @@ export default defineType({
             title: "Main Image",
             type: "image",
             options: { hotspot: true },
-            description: "A hero image for the blog post.",
         }),
         defineField({
             name: "excerpt",
             title: "Excerpt",
             type: "text",
-            description: "Short summary (shown on listing pages).",
             rows: 3,
             validation: (Rule) => Rule.max(200),
         }),
@@ -58,16 +60,18 @@ export default defineType({
             title: "Categories",
             type: "array",
             of: [{ type: "reference", to: [{ type: "category" }] }],
-            description: "Assign one or more categories.",
+        }),
+        defineField({
+            name: "tags",
+            title: "Tags",
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "tag" }] }],
         }),
         defineField({
             name: "content",
-            title: "Body Content",
+            title: "Content",
             type: "array",
-            of: [
-                { type: "block" },
-                // add custom block types here if needed (e.g. code, videoEmbed)
-            ],
+            of: [{ type: "block" }],
         }),
     ],
     preview: {
@@ -76,8 +80,7 @@ export default defineType({
             authorName: "author.name",
             media: "mainImage",
         },
-        prepare(selection) {
-            const { title, authorName } = selection;
+        prepare({ title, authorName }) {
             return {
                 title,
                 subtitle: authorName ? `by ${authorName}` : "",

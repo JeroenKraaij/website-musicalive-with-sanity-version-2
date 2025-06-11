@@ -2,13 +2,13 @@
 import { defineType, defineField } from "sanity";
 
 export default defineType({
-    name: "category",
-    title: "Category",
+    name: "tag",
+    title: "Tag",
     type: "document",
     fields: [
         defineField({
-            name: "title",
-            title: "Title",
+            name: "label",
+            title: "Label",
             type: "string",
             validation: (Rule) => Rule.required(),
         }),
@@ -17,7 +17,7 @@ export default defineType({
             title: "Slug",
             type: "slug",
             options: {
-                source: "title",
+                source: "label",
                 maxLength: 96,
             },
             validation: (Rule) => Rule.required(),
@@ -25,7 +25,7 @@ export default defineType({
     ],
     preview: {
         select: {
-            title: "title",
+            title: "label",
         },
     },
 });

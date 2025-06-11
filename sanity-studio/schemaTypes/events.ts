@@ -62,7 +62,7 @@ export default defineType({
             name: "isFeatured",
             title: "Feature this Event?",
             type: "boolean",
-            description: "If checked, display in “Featured Events” sections.",
+            description: "If checked, display in “Featured Events” blocks.",
             initialValue: false,
         }),
         defineField({

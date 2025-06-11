@@ -3,7 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
-import SocialIcon from "@/components/icons/socialIcons"
+import SocialIcon from "@/components/icons/SocialIcons"
 import { NavigationItem } from "@/types/sanity"
 
 type MobileMenuProps = {

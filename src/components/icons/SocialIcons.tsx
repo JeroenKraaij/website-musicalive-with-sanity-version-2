@@ -1,14 +1,12 @@
-import { Facebook, Instagram, Youtube, Linkedin } from "lucide-react";
+
+
+"use client";
+
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { iconMap } from "@/lib/icons/icons"; // centrale mapping van iconen
 
-const iconMap = {
-    facebook: Facebook,
-    instagram: Instagram,
-    youtube: Youtube,
-    linkedin: Linkedin,
-} as const;
-
+// Beschikbare groottes en corresponderende Tailwind-klassen
 const sizeMap = {
     sm: { padding: "p-1.5", icon: "w-4 h-4" },
     md: { padding: "p-2", icon: "w-5 h-5" },
@@ -16,17 +14,16 @@ const sizeMap = {
     xl: { padding: "p-3", icon: "w-7 h-7" },
 };
 
-type IconType = keyof typeof iconMap;
+export type IconType = keyof typeof iconMap;
 
 type SocialIconProps = {
-    icon: string; // string input uit Sanity
+    icon: IconType;
     href: string;
     size?: keyof typeof sizeMap;
 };
 
 export default function SocialIcon({ icon, href, size = "md" }: SocialIconProps) {
-    const IconComponent = iconMap[icon as IconType];
-
+    const IconComponent = iconMap[icon];
     if (!IconComponent) return null;
 
     const { padding, icon: iconSize } = sizeMap[size];
